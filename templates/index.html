@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .file-upload {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #prediction {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Plant Disease Recognition System</h1>
+        <p>Upload an image of a plant leaf to detect diseases</p>
+    </header>
+
+    <div class="container">
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="file-upload">
+                <input type="file" name="image" id="imageInput" required>
+            </div>
+            <button type="submit">Upload and Predict</button>
+        </form>
+
+        <div id="prediction"></div>
+    </div>
+
+    <script>
+        // Handle form submission and fetch prediction result
+        document.getElementById("uploadForm").addEventListener("submit", function(event) {
+            event.preventDefault();  // Prevent form from submitting the traditional way
+
+            let formData = new FormData();
+            let imageInput = document.getElementById("imageInput");
+            formData.append("image", imageInput.files[0]);
+
+            // Send the form data to the Flask server for prediction
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.prediction) {
+                    document.getElementById("prediction").innerText = "Predicted Disease: " + data.prediction;
+                } else if (data.error) {
+                    document.getElementById("prediction").innerText = "Error: " + data.error;
+                }
+            })
+            .catch(error => {
+                document.getElementById("prediction").innerText = "Error: " + error;
+            });
+        });
+    </script>
+</body>
+</html>
