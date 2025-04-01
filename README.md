@@ -11,3 +11,7 @@ This project focuses on detecting and classifying plant diseases using a Convolu
 📌 Technologies Used:
     Python, TensorFlow/Keras, OpenCV, NumPy, Matplotlib,Flask
     GUI:  Streamlit
+
+
+
+[Download Dataset Here]( https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset)
